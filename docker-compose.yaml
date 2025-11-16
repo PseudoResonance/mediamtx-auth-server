@@ -1,0 +1,18 @@
+services:
+  mediamtxauth:
+    build:
+      context: ./
+      dockerfile: ./docker/Dockerfile
+    restart: always
+    network_mode: "host"
+    environment:
+      BIND_PORT: 8080
+      CONFIG_PATH: "/config.yaml"
+    volumes:
+      - ./config.yaml:/config.yaml:ro
+  mediamtx:
+    image: bluenviron/mediamtx:latest-ffmpeg
+    restart: always
+    network_mode: "host"
+    volumes:
+      - ./docker/mediamtx.yaml:/mediamtx.yml

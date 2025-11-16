@@ -1,0 +1,40 @@
+# Server bind address
+bindAddress:
+bindPort: 8080
+# List of IP ranges in CIDR format that can access the API/metrics/pprof
+apiIpRanges:
+    - 127.0.0.0/8
+    - ::1/128
+# List of IP ranges in CIDR format that will be considered as private
+privateIpRanges:
+    - 0.0.0.0/8
+    - 10.0.0.0/8
+    - 100.64.0.0/10
+    - 127.0.0.0/8
+    - 169.254.0.0/16
+    - 172.16.0.0/12
+    - 192.168.0.0/16
+    - 198.18.0.0/15
+    - ::1/128
+    - fc00::/7
+    - fe80::/64
+# URL query token key
+queryTokenKey: "token"
+# Base URL to MediaMTX without trailing slash
+mediamtxApiBase: http://localhost:9997
+# Backend database configuration
+database:
+    hostname: localhost
+    port: 5432
+    database: mediamtxauth
+    username: mediamtxauth
+    password: ""
+    # How frequently the database is polled for updates in seconds
+    # This currently only checks for new credentials to prevent users from being locked out if they access too early
+    pollInterval: 15
+    # How long credentials are cached in seconds
+    cacheDuration: 300
+    # How long a connection is tracked for before being checked in minutes
+    # This generally shouldn't need to be changed
+    connectionTrackDuration: 60
+

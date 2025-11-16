@@ -16,7 +16,7 @@ func (d *DatabaseManager) ValidateAuth(req *Credentials, connection *Connection)
 		if credData == nil {
 			return false, nil
 		}
-		if credData.Valid {
+		if credData.Valid && connection != nil {
 			defer d.registerConnection(req, credData, connection)
 		}
 		return credData.Valid, nil
@@ -29,7 +29,7 @@ func (d *DatabaseManager) ValidateAuth(req *Credentials, connection *Connection)
 	}
 	credData := CredentialData{Valid: valid}
 	defer d.cache.Set(*req, &credData, ttlcache.DefaultTTL)
-	if valid {
+	if valid && connection != nil {
 		defer d.registerConnection(req, &credData, connection)
 	}
 	return valid, nil

@@ -22,6 +22,14 @@ privateIpRanges:
 queryTokenKey: "token"
 # Base URL to MediaMTX without trailing slash
 mediamtxApiBase: http://localhost:9997
+# Forward auth endpoint config
+forwardAuth:
+    # Header which contains the original request URI
+    uriHeader: "X-Forwarded-Uri"
+    # Header containing the original request IP
+    ipHeader: "X-Forwarded-For"
+    # Whatever prefix (or no prefix) prepends each request path
+    basePath: "/thumbnails"
 # Backend database configuration
 database:
     hostname: localhost

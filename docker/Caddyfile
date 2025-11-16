@@ -1,0 +1,22 @@
+{
+        http_port 8000
+        auto_https off
+        admin off
+}
+
+:8000 {
+        handle /thumbnails/* {
+                forward_auth * localhost:8080 {
+                        uri /forward
+                }
+
+                root * /usr/share/caddy
+                file_server *
+        }
+
+        handle {
+                respond * "Forbidden" 403 {
+                        close
+                }
+        }
+}

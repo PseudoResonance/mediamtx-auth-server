@@ -16,3 +16,9 @@ services:
     network_mode: "host"
     volumes:
       - ./docker/mediamtx.yaml:/mediamtx.yml
+  caddy:
+    image: caddy:alpine
+    restart: always
+    network_mode: "host"
+    volumes:
+      - ./docker/Caddyfile:/etc/caddy/Caddyfile

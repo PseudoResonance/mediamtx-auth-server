@@ -7,13 +7,20 @@ import (
 )
 
 type MainConfig struct {
-	BindAddress     string         `yaml:"bindAddress"`
-	BindPort        int            `yaml:"bindPort"`
-	ApiIps          []string       `yaml:"apiIpRanges"`
-	PrivateIps      []string       `yaml:"privateIpRanges"`
-	QueryTokenKey   string         `yaml:"queryTokenKey"`
-	MediaMtxUrlBase string         `yaml:"mediamtxApiBase"`
-	Database        DatabaseConfig `yaml:"database"`
+	BindAddress     string            `yaml:"bindAddress"`
+	BindPort        int               `yaml:"bindPort"`
+	ApiIps          []string          `yaml:"apiIpRanges"`
+	PrivateIps      []string          `yaml:"privateIpRanges"`
+	QueryTokenKey   string            `yaml:"queryTokenKey"`
+	MediaMtxUrlBase string            `yaml:"mediamtxApiBase"`
+	ForwardAuth     ForwardAuthConfig `yaml:"forwardAuth"`
+	Database        DatabaseConfig    `yaml:"database"`
+}
+
+type ForwardAuthConfig struct {
+	UriHeader string `yaml:"uriHeader"`
+	IpHeader  string `yaml:"ipHeader"`
+	BasePath  string `yaml:"basePath"`
 }
 
 type DatabaseConfig struct {
@@ -36,6 +43,11 @@ func NewMainConfig() MainConfig {
 			"::1/128", "fc00::/7", "fe80::/64"},
 		QueryTokenKey:   "token",
 		MediaMtxUrlBase: "http://localhost:9997",
+		ForwardAuth: ForwardAuthConfig{
+			UriHeader: "X-Forwarded-Uri",
+			IpHeader:  "X-Forwarded-For",
+			BasePath:  "/thumbnails",
+		},
 		Database: DatabaseConfig{
 			Hostname:                "localhost",
 			Port:                    5432,

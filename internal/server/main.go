@@ -40,6 +40,9 @@ func main() {
 	connectHandler := ConnectHandler{Database: &db}
 	http.Handle("/connection", connectHandler)
 
+	forwardAuthHandler := ForwardAuthHandler{PrivateIps: config.PrivateIps, QueryTokenKey: config.QueryTokenKey, Config: config.ForwardAuth, Database: &db}
+	http.Handle("/forward", forwardAuthHandler)
+
 	http.HandleFunc("/healthz", func(w http.ResponseWriter, r *http.Request) {
 		io.WriteString(w, "ok")
 	})

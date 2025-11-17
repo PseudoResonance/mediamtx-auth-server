@@ -53,6 +53,16 @@ runOnConnect: wget -qO /dev/null "http://localhost:8080/connection?action=connec
 runOnDisconnect: wget -qO /dev/null "http://localhost:8080/connection?action=disconnect&type=$MTX_CONN_TYPE&id=$MTX_CONN_ID"
 ```
 
+### Multiple MediaMTX Servers
+
+When using multiple MediaMTX servers, actions can be filtered in the auth URL, to restrict a server for only certain types of requests.
+
+For example, the following auth URL will allow read/publish actions, but not playback, on this instance.
+
+```yaml
+authHTTPAddress: http://localhost:8080/auth?allowed=read&allowed=publish
+```
+
 ## Forward Auth Thumbnail Server Configuration
 
 To protect thumbnails behind auth as well, the server hosting/proxying the thumbnails can use forward auth.

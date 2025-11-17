@@ -51,7 +51,7 @@ func TestFALocal(t *testing.T) {
 	}
 	forwardAuthHandler.Init()
 	req, err := http.NewRequest("GET", "/forward", nil)
-	req.Header.Add(forwardAuthHandler.Config.UriHeader, "/thumbnails/test?token=abc")
+	req.Header.Add(forwardAuthHandler.Config.UriHeader, "/thumbnails/test.png?token=abc")
 	req.Header.Add(forwardAuthHandler.Config.IpHeader, "127.0.0.1")
 	if err != nil {
 		t.Fatal(err)
@@ -73,7 +73,7 @@ func TestFALocalMulti(t *testing.T) {
 	}
 	forwardAuthHandler.Init()
 	req, err := http.NewRequest("GET", "/forward", nil)
-	req.Header.Add(forwardAuthHandler.Config.UriHeader, "/thumbnails/test?token=abc")
+	req.Header.Add(forwardAuthHandler.Config.UriHeader, "/thumbnails/test.png?token=abc")
 	req.Header.Add(forwardAuthHandler.Config.IpHeader, "127.0.0.1, 10.0.0.5")
 	if err != nil {
 		t.Fatal(err)

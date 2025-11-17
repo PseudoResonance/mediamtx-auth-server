@@ -7,8 +7,13 @@ import (
 	"net"
 	"net/http"
 	"net/url"
+	"slices"
 
 	"github.com/pseudoresonance/authserver/internal/database"
+)
+
+const (
+	actionFilterQuery = "allowed"
 )
 
 type AuthHandler struct {
@@ -70,6 +75,21 @@ func (a AuthHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusMethodNotAllowed)
 		return
 	}
+	var actionFilter []string
+	// Check query
+	if len(r.URL.Query()) > 0 {
+		res := r.URL.Query()[actionFilterQuery]
+		for _, v := range res {
+			switch v {
+			case "read", "publish", "playback":
+			default:
+				log.Printf("Invalid action filter type: %v\n", v)
+				continue
+			}
+			actionFilter = append(actionFilter, v)
+		}
+	}
+
 	// Decode
 	request := authRequestBody{}
 	d := json.NewDecoder(r.Body)
@@ -107,6 +127,12 @@ func (a AuthHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	// Other access from private networks is accepted - generally for container networks
 	if listContainsIp(a.NetPrivateIps, ip) {
 		w.WriteHeader(http.StatusOK)
+		return
+	}
+
+	// Validate allowed actions
+	if len(actionFilter) > 0 && !slices.Contains(actionFilter, *request.Action) {
+		w.WriteHeader(http.StatusForbidden)
 		return
 	}
 

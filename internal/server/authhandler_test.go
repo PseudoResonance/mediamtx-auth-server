@@ -55,6 +55,7 @@ func TestPrivateIp(t *testing.T) {
 		User:     strPtr(""),
 		Password: strPtr(""),
 		Ip:       strPtr("fd32::"),
+		Action:   strPtr("read"),
 	}
 	buf := bytes.Buffer{}
 	err := json.NewEncoder(&buf).Encode(body)

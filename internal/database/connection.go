@@ -74,7 +74,7 @@ Tell MediaMTX to forcefully close a connection
 func (d *DatabaseManager) closeConnection(conn Connection, action string) {
 	var baseUrl string
 	switch action {
-	case "read":
+	case "read", "playback":
 		baseUrl = d.conf.MediaMtxUrlBase
 	case "publish":
 		baseUrl = d.conf.MediaMtxUrlBasePublish
@@ -139,7 +139,7 @@ func (d *DatabaseManager) postToUrl(url string) {
 func (d *DatabaseManager) validateConnection(conn Connection, action string) bool {
 	var baseUrl string
 	switch action {
-	case "read":
+	case "read", "playback":
 		baseUrl = d.conf.MediaMtxUrlBase
 	case "publish":
 		baseUrl = d.conf.MediaMtxUrlBasePublish

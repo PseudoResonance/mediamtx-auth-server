@@ -33,7 +33,7 @@ func main() {
 	defer db.Close()
 
 	// Server
-	authHandler := AuthHandler{ApiIps: config.ApiIps, PrivateIps: config.PrivateIps, QueryTokenKey: config.QueryTokenKey, Database: &db}
+	authHandler := AuthHandler{ApiIps: config.ApiIps, MonitoringIps: config.MonitoringIpRanges, PrivateIps: config.PrivateIps, QueryTokenKey: config.QueryTokenKey, Database: &db}
 	authHandler.Init()
 	http.Handle("/auth", authHandler)
 

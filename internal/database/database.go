@@ -67,7 +67,7 @@ func (d *DatabaseManager) Init(config *config.MainConfig) {
 	)
 	d.connections.OnEviction(func(ctx context.Context, reason ttlcache.EvictionReason, item *ttlcache.Item[string, ConnectionRecord]) {
 		record := item.Value()
-		valid := d.validateConnection(record.Info)
+		valid := d.validateConnection(record.Info, record.Creds.Action)
 		if valid {
 			// Reset cache if still valid
 			d.connections.Set(item.Key(), record, ttlcache.DefaultTTL)

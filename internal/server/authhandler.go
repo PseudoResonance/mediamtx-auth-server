@@ -12,10 +12,12 @@ import (
 )
 
 type AuthHandler struct {
-	PrivateIps    []string
-	NetPrivateIps []net.IPNet
-	ApiIps        []string
-	NetApiIps     []net.IPNet
+	PrivateIps       []string
+	NetPrivateIps    []net.IPNet
+	ApiIps           []string
+	NetApiIps        []net.IPNet
+	MonitoringIps    []string
+	NetMonitoringIps []net.IPNet
 
 	QueryTokenKey string
 	Database      *database.DatabaseManager
@@ -39,6 +41,15 @@ func (a *AuthHandler) Init() {
 			log.Fatalf("Invalid CIDR %v\n", entry)
 		}
 		a.NetApiIps[i] = *cidr
+	}
+
+	a.NetMonitoringIps = make([]net.IPNet, len(a.MonitoringIps))
+	for i, entry := range a.MonitoringIps {
+		_, cidr, err := net.ParseCIDR(entry)
+		if err != nil {
+			log.Fatalf("Invalid CIDR %v\n", entry)
+		}
+		a.NetMonitoringIps[i] = *cidr
 	}
 }
 
@@ -76,8 +87,16 @@ func (a AuthHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	ip := net.ParseIP(*request.Ip)
 
 	// Special logic for API access
-	if *request.Action == "api" || *request.Action == "metrics" || *request.Action == "pprof" {
+	switch *request.Action {
+	case "api":
 		if listContainsIp(a.NetApiIps, ip) {
+			w.WriteHeader(http.StatusOK)
+		} else {
+			w.WriteHeader(http.StatusForbidden)
+		}
+		return
+	case "metrics", "pprof":
+		if listContainsIp(a.NetMonitoringIps, ip) {
 			w.WriteHeader(http.StatusOK)
 		} else {
 			w.WriteHeader(http.StatusForbidden)

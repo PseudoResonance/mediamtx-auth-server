@@ -7,14 +7,16 @@ import (
 )
 
 type MainConfig struct {
-	BindAddress     string            `yaml:"bindAddress"`
-	BindPort        int               `yaml:"bindPort"`
-	ApiIps          []string          `yaml:"apiIpRanges"`
-	PrivateIps      []string          `yaml:"privateIpRanges"`
-	QueryTokenKey   string            `yaml:"queryTokenKey"`
-	MediaMtxUrlBase string            `yaml:"mediamtxApiBase"`
-	ForwardAuth     ForwardAuthConfig `yaml:"forwardAuth"`
-	Database        DatabaseConfig    `yaml:"database"`
+	BindAddress            string            `yaml:"bindAddress"`
+	BindPort               int               `yaml:"bindPort"`
+	ApiIps                 []string          `yaml:"apiIpRanges"`
+	MonitoringIpRanges     []string          `yaml:"monitoringIpRanges"`
+	PrivateIps             []string          `yaml:"privateIpRanges"`
+	QueryTokenKey          string            `yaml:"queryTokenKey"`
+	MediaMtxUrlBase        string            `yaml:"mediamtxApiBase"`
+	MediaMtxUrlBasePublish string            `yaml:"mediamtxApiBasePublish"`
+	ForwardAuth            ForwardAuthConfig `yaml:"forwardAuth"`
+	Database               DatabaseConfig    `yaml:"database"`
 }
 
 type ForwardAuthConfig struct {
@@ -36,13 +38,15 @@ type DatabaseConfig struct {
 
 func NewMainConfig() MainConfig {
 	return MainConfig{
-		BindAddress: "",
-		BindPort:    8080,
-		ApiIps:      []string{"127.0.0.0/8", "::1/128"},
+		BindAddress:        "",
+		BindPort:           8080,
+		ApiIps:             []string{"127.0.0.0/8", "::1/128"},
+		MonitoringIpRanges: []string{"127.0.0.0/8", "::1/128"},
 		PrivateIps: []string{"0.0.0.0/8", "10.0.0.0/8", "100.64.0.0/10", "127.0.0.0/8", "169.254.0.0/16", "172.16.0.0/12", "192.168.0.0/16", "198.18.0.0/15",
 			"::1/128", "fc00::/7", "fe80::/64"},
-		QueryTokenKey:   "token",
-		MediaMtxUrlBase: "http://localhost:9997",
+		QueryTokenKey:          "token",
+		MediaMtxUrlBase:        "http://localhost:9997",
+		MediaMtxUrlBasePublish: "http://localhost:9997",
 		ForwardAuth: ForwardAuthConfig{
 			UriHeader: "X-Forwarded-Uri",
 			IpHeader:  "X-Forwarded-For",
